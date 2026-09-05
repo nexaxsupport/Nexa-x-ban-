@@ -1,4 +1,4 @@
-# anon V6 - WhatsApp Assistant Bot
+# NEXA X v5  - WhatsApp Assistant Bot
 
 A smart WhatsApp assistant bot for pairing and managing devices.
 
