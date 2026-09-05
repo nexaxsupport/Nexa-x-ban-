@@ -8,7 +8,7 @@ NC='\033[0m'
 
 echo -e "${GREEN}"
 echo "╔════════════════════════════════════╗"
-echo "║         anon V6 - STARTER          ║"
+echo "║         Nexa x v5 - STARTER          ║"
 echo "╚════════════════════════════════════╝"
 echo -e "${NC}"
 
@@ -36,7 +36,7 @@ if ! pip show flask &> /dev/null; then
 fi
 
 # Start
-echo -e "${GREEN}[✓] Starting anon V6...${NC}"
+echo -e "${GREEN}[✓] Starting Nexa x v5...${NC}"
 echo -e "${YELLOW}[i] Open browser: http://localhost:8080${NC}"
 echo ""
 
