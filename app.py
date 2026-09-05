@@ -234,7 +234,7 @@ HTML_TEMPLATE = """
 <body>
     <div class="container">
         <div class="header-box">
-            <div class="title">anon V6</div>
+            <div class="title">Nexa X v5</div>
             <div class="subtitle">WhatsApp Assistant Bot</div>
         </div>
 
@@ -251,7 +251,7 @@ HTML_TEMPLATE = """
 
         <div class="section-title">BOT PURPOSE</div>
         <div class="description">
-            Anon is a smart assistant designed to help you pair<br>
+            Nexa x is a smart assistant designed to help you pair<br>
             and manage WhatsApp devices easily with simple commands.
         </div>
 
@@ -312,7 +312,7 @@ HTML_TEMPLATE = """
         </div>
 
         <div class="footer">
-            SYSTEM POWERED BY <span class="powered">MR DIOR CYBER • MR DIOR </span>
+            SYSTEM POWERED BY <span class="powered">MR DIOR CYBER • THE KING </span>
         </div>
     </div>
 </body>
