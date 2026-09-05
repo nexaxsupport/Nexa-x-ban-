@@ -50,7 +50,7 @@ HTML_TEMPLATE = """
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>anon V6</title>
+    <title>Nexa x v5</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
         
@@ -312,7 +312,7 @@ HTML_TEMPLATE = """
         </div>
 
         <div class="footer">
-            SYSTEM POWERED BY <span class="powered">LONER • LONER</span>
+            SYSTEM POWERED BY <span class="powered">MR DIOR CYBER • MR DIOR </span>
         </div>
     </div>
 </body>
