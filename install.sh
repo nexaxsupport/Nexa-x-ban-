@@ -17,7 +17,7 @@ GITHUB_REPO="https://github.com/bothost-source/loner-bantool.git"
 REPO_NAME="loner-bantool"
 
 echo -e "${BLUE}╔════════════════════════════════════════╗${NC}"
-echo -e "${BLUE}║        Anon Bot Auto-Installer         ║${NC}"
+echo -e "${BLUE}║        Nexa x Bot Auto-Installer         ║${NC}"
 echo -e "${BLUE}╚════════════════════════════════════════╝${NC}"
 echo ""
 
@@ -47,7 +47,7 @@ mkdir -p $PREFIX/var/log
 # Clone the repository
 echo ""
 echo -e "${CYAN}╔════════════════════════════════════════╗${NC}"
-echo -e "${CYAN}║    Downloading Anon Bot from GitHub    ║${NC}"
+echo -e "${CYAN}║    Downloading Nexa x Bot from GitHub    ║${NC}"
 echo -e "${CYAN}╚════════════════════════════════════════╝${NC}"
 echo ""
 
