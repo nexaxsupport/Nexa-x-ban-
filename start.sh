@@ -8,7 +8,7 @@ NC='\033[0m'
 
 echo -e "${GREEN}"
 echo "╔════════════════════════════════════╗"
-echo "║         Nexa x v5 - STARTER          ║"
+echo "║         NEXA X v5 - STARTER          ║"
 echo "╚════════════════════════════════════╝"
 echo -e "${NC}"
 
