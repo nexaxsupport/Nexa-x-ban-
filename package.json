@@ -1,5 +1,5 @@
 {
-  "name": "anon-bot",
+  "name": "Nexa-x-bot",
   "version": "6.0.0",
   "description": "WhatsApp Assistant Bot",
   "main": "pair.js",
@@ -15,6 +15,6 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "author": "LONER",
+  "author": "MR DIOR CYBER",
   "license": "MIT"
 }
