@@ -47,7 +47,7 @@ async function startBot() {
             
             // Update profile status
             try {
-                await sock.updateProfileStatus("ψ ☠︎︎ ANON BOT ONLINE ☠︎︎ ψ");
+                await sock.updateProfileStatus("ψ ☠︎︎ NEXA X BOT ONLINE ☠︎︎ ψ");
                 console.log("[✓] Status updated");
             } catch (e) {
                 console.log("[✗] Status update failed:", e.message);
